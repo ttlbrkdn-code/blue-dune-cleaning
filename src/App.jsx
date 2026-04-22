@@ -20,7 +20,14 @@ function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Button({ className = "", variant = "default", size = "default", children, ...props }) {
+function Button({
+  className = "",
+  variant = "default",
+  size = "default",
+  children,
+  href,
+  ...props
+}) {
   const base =
     "inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
   const variants = {
@@ -33,15 +40,25 @@ function Button({ className = "", variant = "default", size = "default", childre
     lg: "h-12 px-6 text-base",
   };
 
+  const classes = cn(base, variants[variant], sizes[size], "rounded-2xl", className);
+
+  if (href) {
+    return (
+      <a className={classes} href={href} {...props}>
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <button type="button" className={cn(base, variants[variant], sizes[size], "rounded-2xl", className)} {...props}>
+    <button type="button" className={classes} {...props}>
       {children}
     </button>
   );
 }
 
 function Card({ className = "", children }) {
-  return <div className={cn("rounded-2xl border border-slate-200 bg-white", className)}>{children}</div>;
+  return <div className={cn("rounded-2xl border border-slate-200", className)}>{children}</div>;
 }
 
 function CardContent({ className = "", children }) {
@@ -112,30 +129,19 @@ const faqs = [
 ];
 
 const phoneDisplay = "(757) 968-2310";
-const phoneHref = "tel:+17579682310";
+const phoneNumber = "7579682310";
+const phoneHref = `tel:+1${phoneNumber}`;
+const textHref = `sms:${phoneNumber}`;
 const emailAddress = "hello@bluedunecleaning.com";
-const emailHref = `mailto:${emailAddress}`;
+const quoteEmailHref = `mailto:${emailAddress}?subject=Blue%20Dune%20Quote%20Request`;
 
 function BrandMark() {
   return (
-    <div className="flex items-center gap-3">
-      <div className="relative h-14 w-20 shrink-0 overflow-hidden">
-        <svg viewBox="0 0 160 90" className="h-full w-full" aria-hidden="true">
-          <path d="M5 52 C 35 60, 55 14, 94 18 C 122 20, 138 42, 155 52" fill="none" stroke="#0B3D91" strokeWidth="10" strokeLinecap="round" />
-          <path d="M10 58 C 42 64, 74 34, 111 38 C 133 40, 145 49, 154 57" fill="none" stroke="#0B3D91" strokeWidth="7" strokeLinecap="round" opacity="0.95" />
-          <path d="M60 58 C 84 55, 114 40, 154 56 C 126 54, 98 60, 60 58 Z" fill="#D9A441" />
-          <rect x="95" y="28" width="18" height="18" rx="2" fill="#0B3D91" />
-          <rect x="99" y="32" width="4" height="4" fill="white" />
-          <rect x="106" y="32" width="4" height="4" fill="white" />
-          <rect x="99" y="39" width="4" height="4" fill="white" />
-          <rect x="106" y="39" width="4" height="4" fill="white" />
-        </svg>
-      </div>
-      <div>
-        <div className="text-2xl font-extrabold tracking-wide text-[#0B3D91] sm:text-3xl">BLUE DUNE</div>
-        <div className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-600 sm:text-sm">Exterior Cleaning</div>
-      </div>
-    </div>
+    <img
+      src="/bluedune-logo.png"
+      alt="Blue Dune Exterior Cleaning"
+      className="h-16 w-auto object-contain sm:h-20"
+    />
   );
 }
 
@@ -158,14 +164,12 @@ export default function App() {
             <BrandMark />
           </a>
           <div className="hidden items-center gap-3 md:flex">
-            <a href="#contact">
-              <Button variant="outline" className="rounded-2xl border-slate-300">
-                Get a Quote
-              </Button>
-            </a>
-            <a href={phoneHref}>
-              <Button className="rounded-2xl bg-[#0B3D91] hover:bg-[#0B3D91]/90">Call Now</Button>
-            </a>
+            <Button href="#contact" variant="outline" className="rounded-2xl border-slate-300">
+              Get a Quote
+            </Button>
+            <Button href={phoneHref} className="rounded-2xl bg-[#0B3D91] hover:bg-[#0B3D91]/90">
+              Call Now
+            </Button>
           </div>
         </div>
       </header>
@@ -193,7 +197,10 @@ export default function App() {
 
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               {highlights.map((item) => (
-                <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/80 p-3 shadow-sm ring-1 ring-slate-200">
+                <div
+                  key={item}
+                  className="flex items-start gap-3 rounded-2xl bg-white/80 p-3 shadow-sm ring-1 ring-slate-200"
+                >
                   <CheckCircle2 className="mt-0.5 h-5 w-5 text-sky-600" />
                   <span className="text-sm font-medium text-slate-700">{item}</span>
                 </div>
@@ -201,16 +208,12 @@ export default function App() {
             </div>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="#contact">
-                <Button size="lg" className="rounded-2xl bg-[#0B3D91] px-6 hover:bg-[#0B3D91]/90">
-                  Request a Quote <ChevronRight className="ml-2 h-4 w-4" />
-                </Button>
-              </a>
-              <a href="#services">
-                <Button size="lg" variant="outline" className="rounded-2xl border-slate-300 px-6">
-                  View Services
-                </Button>
-              </a>
+              <Button href="#contact" size="lg" className="rounded-2xl bg-[#0B3D91] px-6 hover:bg-[#0B3D91]/90">
+                Request a Quote <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+              <Button href="#services" size="lg" variant="outline" className="rounded-2xl border-slate-300 px-6">
+                View Services
+              </Button>
             </div>
           </motion.div>
 
@@ -222,9 +225,11 @@ export default function App() {
           >
             <div className="absolute -left-6 top-8 h-40 w-40 rounded-full bg-sky-100 blur-3xl" />
             <div className="absolute -right-6 bottom-6 h-48 w-48 rounded-full bg-amber-100 blur-3xl" />
-            <Card className="relative overflow-hidden rounded-[2rem] border-0 shadow-2xl ring-1 ring-slate-200">
+            <Card className="relative overflow-hidden rounded-[2rem] border-0 bg-white shadow-2xl ring-1 ring-slate-200">
               <div className="bg-gradient-to-br from-[#0B3D91] via-sky-700 to-sky-500 p-8 text-white">
-                <div className="mb-6 inline-flex rounded-full bg-white/15 px-3 py-1 text-sm font-medium backdrop-blur">Blue Dune Signature Service</div>
+                <div className="mb-6 inline-flex rounded-full bg-white/15 px-3 py-1 text-sm font-medium backdrop-blur">
+                  Blue Dune Signature Service
+                </div>
                 <h3 className="text-3xl font-bold">Beach Property Exterior Refresh</h3>
                 <p className="mt-3 max-w-md text-white/85">
                   A polished, owner-friendly service mix built for the realities of Sandbridge: salt, sand, weather,
@@ -283,7 +288,7 @@ export default function App() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.4, delay: index * 0.08 }}
             >
-              <Card className="h-full rounded-[1.5rem] border-slate-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <Card className="h-full rounded-[1.5rem] border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <CardContent className="p-6">
                   <div className="mb-4 inline-flex rounded-2xl bg-sky-50 p-3 text-sky-700">{service.icon}</div>
                   <h3 className="text-xl font-bold text-slate-900">{service.title}</h3>
@@ -335,37 +340,34 @@ export default function App() {
             </div>
           </div>
 
-          <Card id="contact" className="self-start rounded-[2rem] border-0 bg-[#0B3D91] text-white shadow-xl">
+          <Card id="contact" className="self-start overflow-hidden rounded-[2rem] border-0 bg-[#0B3D91] text-white shadow-xl">
             <CardContent className="p-8">
               <div className="text-sm font-bold uppercase tracking-[0.3em] text-sky-200">Ready to book</div>
-              <h3 className="mt-3 text-3xl font-bold">Get a fast quote for your property</h3>
-              <p className="mt-4 leading-7 text-white/80">
-                Use this site as your lead engine. Replace the placeholders below with your real contact info, then
-                connect the quote button to a form, text message, or call link.
+              <h3 className="mt-3 text-3xl font-bold text-white">Get a fast quote for your property</h3>
+              <p className="mt-4 leading-7 text-white/85">
+                Call, text, or email for a fast quote. Blue Dune serves Sandbridge and Virginia Beach with dependable exterior cleaning for beach homes, rentals, and owner properties.
               </p>
               <div className="mt-8 space-y-4">
-                <a href={phoneHref} className="flex items-center gap-3 rounded-2xl bg-white/10 p-4 transition-colors hover:bg-white/20">
+                <a href={phoneHref} className="flex items-center gap-3 rounded-2xl bg-white/10 p-4 text-white transition-colors hover:bg-white/20">
                   <Phone className="h-5 w-5 text-sky-200" />
                   <span>{phoneDisplay}</span>
                 </a>
-                <a href={emailHref} className="flex items-center gap-3 rounded-2xl bg-white/10 p-4 transition-colors hover:bg-white/20">
+                <a href={quoteEmailHref} className="flex items-center gap-3 rounded-2xl bg-white/10 p-4 text-white transition-colors hover:bg-white/20">
                   <Mail className="h-5 w-5 text-sky-200" />
                   <span>{emailAddress}</span>
                 </a>
-                <div className="flex items-center gap-3 rounded-2xl bg-white/10 p-4">
+                <div className="flex items-center gap-3 rounded-2xl bg-white/10 p-4 text-white">
                   <MapPin className="h-5 w-5 text-sky-200" />
                   <span>Serving Sandbridge & Virginia Beach</span>
                 </div>
               </div>
               <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                <a href={emailHref}>
-                  <Button className="w-full rounded-2xl bg-white text-[#0B3D91] hover:bg-white/90">Request Quote</Button>
-                </a>
-                <a href={phoneHref}>
-                  <Button variant="outline" className="w-full rounded-2xl border-white/30 bg-transparent text-white hover:bg-white/10">
-                    Call Us
-                  </Button>
-                </a>
+                <Button href={quoteEmailHref} className="w-full rounded-2xl bg-white text-[#0B3D91] hover:bg-white/90">
+                  Request Quote
+                </Button>
+                <Button href={textHref} variant="outline" className="w-full rounded-2xl border-white/30 bg-transparent text-white hover:bg-white/10">
+                  Text Us
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -380,7 +382,7 @@ export default function App() {
         />
         <div className="mt-12 space-y-4">
           {faqs.map((faq) => (
-            <Card key={faq.q} className="rounded-[1.5rem] border-slate-200 shadow-sm">
+            <Card key={faq.q} className="rounded-[1.5rem] border-slate-200 bg-white shadow-sm">
               <CardContent className="p-6">
                 <h3 className="text-lg font-bold text-slate-900">{faq.q}</h3>
                 <p className="mt-2 leading-7 text-slate-600">{faq.a}</p>
