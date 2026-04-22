@@ -1,32 +1,65 @@
-# Blue Dune Exterior Cleaning — Website
+# Blue Dune Exterior Cleaning Website
 
-This repository is a Vite + React site scaffolded for Blue Dune Exterior Cleaning, using Tailwind CSS, Framer Motion and lucide-react icons.
+This is a production-ready Vite + React + Tailwind site for Blue Dune Exterior Cleaning.
 
-Local development
+## Requirements
 
-1. Install dependencies:
+- Node.js 18+ (recommended: Node.js 20 LTS)
+- npm 9+
+
+## Local development
 
 ```powershell
 npm.cmd install
-```
-
-2. Start dev server:
-
-```powershell
 npm.cmd run dev
 ```
 
-Build
+## Production build
 
 ```powershell
 npm.cmd run build
 ```
 
-Cloudflare Pages
+The build output is generated in `dist/`.
 
-Use these build settings in Cloudflare Pages:
+## Deploy options
+
+### Vercel
+
+- Framework preset: `Vite`
+- Build command: `npm run build`
+- Output directory: `dist`
+
+### Netlify
+
+- Build command: `npm run build`
+- Publish directory: `dist`
+
+### Cloudflare Pages
+
 - Build command: `npm run build`
 - Build output directory: `dist`
 
-Notes
-- If PowerShell blocks `npm` or `npx`, use `npm.cmd` or `npx.cmd` as shown above.
+### Any static host (S3, Azure Static Web Apps, GitHub Pages)
+
+Upload the contents of `dist/` after running the production build.
+
+## Domain and SEO checklist
+
+Before going live, update these values in `index.html`:
+
+- `og:url`
+- `canonical`
+- (optional) add an `og:image` for social sharing
+
+## Contact details checklist
+
+Before final publish, verify these in `src/App.jsx`:
+
+- `phoneDisplay`
+- `phoneHref`
+- `emailAddress`
+
+## Notes for PowerShell users
+
+If your environment blocks `npm`, use `npm.cmd` as shown above.
